@@ -1,5 +1,6 @@
 from atlassian import Bamboo
-from pprint import pprint
+from tabulate import tabulate
+from data import Plan
 import json
 
 
@@ -12,3 +13,14 @@ class BambooClient:
         plan = self.bamboo.get_plan(key)
         json_object = json.dumps(plan, indent=4)
         print(json_object)
+
+    def search_plan(self, name, project, output):
+        result = self.bamboo.search_plan(name)
+        plans = [Plan(p['searchEntity']) for p in result['searchResults']]
+
+        if (output == 'json'):
+            json_object = json.dumps(result, indent=4)
+            print(json_object)
+        else:
+            table = [p.as_readable_list() for p in plans]
+            print(tabulate(table, headers=["Key", "Name", "Project"]))

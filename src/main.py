@@ -4,10 +4,23 @@ import os
 from client import BambooClient
 
 
+RESOURCE_TYPE_ARG = "resource_type"
+RESOURCE_TYPE_CHOICES = ["p", "plan", "d", "deployment"]
+
+
 def get(args):
     if args.resource_type == "plan" or args.resource_type == "p":
         client = BambooClient(args.server, args.user, args.password, ssl_verify=(not args.ssl_no_verify))
         client.get_plan(args.key)
+    elif args.resource_type == "deployment" or args.resource_type == "d":
+        raise Exception("Working with deployments in not implement yet!")
+    else:
+        raise Exception("Unknown resource_type!")
+
+def search(args):
+    if args.resource_type == "plan" or args.resource_type == "p":
+        client = BambooClient(args.server, args.user, args.password, ssl_verify=(not args.ssl_no_verify))
+        client.search_plan(args.name, args.project, args.output)
     elif args.resource_type == "deployment" or args.resource_type == "d":
         raise Exception("Working with deployments in not implement yet!")
     else:
@@ -23,9 +36,16 @@ def main():
     sub_parsers = parser.add_subparsers()
 
     get_parser = sub_parsers.add_parser("get")
-    get_parser.add_argument("resource_type", choices=["p", "plan", "d", "deployment"])
+    get_parser.add_argument(RESOURCE_TYPE_ARG, choices=RESOURCE_TYPE_CHOICES)
     get_parser.add_argument("key")
     get_parser.set_defaults(func=get)
+
+    search_parser = sub_parsers.add_parser("search")
+    search_parser.add_argument(RESOURCE_TYPE_ARG, choices=RESOURCE_TYPE_CHOICES)
+    search_parser.add_argument("name")
+    search_parser.add_argument("-P", "--project", default=None)
+    search_parser.add_argument("-o", "--output", default="table")
+    search_parser.set_defaults(func=search)
 
     args = parser.parse_args()
 
