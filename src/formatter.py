@@ -46,7 +46,7 @@ class TableFormatter:
         return [self.as_readable_list(p) for p in plans]
 
     def as_readable_list(self, plan):
-        return [plan.get(header) if header != TableFormatterColumn.LINK.value else self.get_plan_link(plan) for header in
+        return [plan.get(header)[:50] if header != TableFormatterColumn.LINK.value else self.get_plan_link(plan) for header in
                 self.headers]
 
     def get_plan_link(self, plan):
