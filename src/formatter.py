@@ -29,7 +29,6 @@ class TableFormatter:
             self._check_headers_supported(headers)
             self.headers = headers
 
-        print(self.headers)
         self.bamboo_base_url = bamboo_base_url
 
     def _check_headers_supported(self, headers):
@@ -40,12 +39,13 @@ class TableFormatter:
 
     def format(self, plans):
         print(tabulate(self.plans_to_table(plans), headers=self.headers))
+        print("---")
+        print(f"Number of plans: {len(plans)}")
 
     def plans_to_table(self, plans):
         return [self.as_readable_list(p) for p in plans]
 
     def as_readable_list(self, plan):
-        print(plan._spec)
         return [plan.get(header) if header != TableFormatterColumn.LINK.value else self.get_plan_link(plan) for header in
                 self.headers]
 

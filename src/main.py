@@ -20,7 +20,7 @@ def get(args):
 def search(args):
     if args.resource_type == "plan" or args.resource_type == "p":
         client = BambooClient(args.server, args.user, args.password, ssl_verify=(not args.ssl_no_verify))
-        client.search_plan(args.name, args.project, args.output)
+        client.search_plan(args.name, args.output)
     elif args.resource_type == "deployment" or args.resource_type == "d":
         raise Exception("Working with deployments in not implement yet!")
     else:
@@ -43,7 +43,6 @@ def main():
     search_parser = sub_parsers.add_parser("search")
     search_parser.add_argument(RESOURCE_TYPE_ARG, choices=RESOURCE_TYPE_CHOICES)
     search_parser.add_argument("name")
-    search_parser.add_argument("-P", "--project", default=None)
     search_parser.add_argument("-o", "--output", default="table")
     search_parser.set_defaults(func=search)
 
