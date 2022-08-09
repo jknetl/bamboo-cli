@@ -65,6 +65,11 @@ def main():
     disable_parser.add_argument("key")
     disable_parser.set_defaults(func=toggle_enabled, enabled=False)
 
+    delete_parser = sub_parsers.add_parser("delete")
+    delete_parser.add_argument(RESOURCE_TYPE_ARG, choices=RESOURCE_TYPE_CHOICES)
+    delete_parser.add_argument("key")
+    delete_parser.set_defaults(func=toggle_enabled, enabled=False)
+
     args = parser.parse_args()
 
     args.func(args)

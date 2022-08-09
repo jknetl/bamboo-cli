@@ -37,3 +37,6 @@ class BambooClient:
             self.bamboo.enable_plan(key)
         else:
             self.bamboo.disable_plan(key)
+
+    def delete_plan(self, key: str):
+        self.bamboo.delete_plan(key)
