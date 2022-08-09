@@ -16,7 +16,6 @@ class BambooClient:
         print(json_object)
 
     def search_plan(self, name, output):
-
         index = 0
         plans = []
         while True:
@@ -32,3 +31,9 @@ class BambooClient:
             formatter = TableFormatter(bamboo_base_url=self.bamboo.url)
 
         formatter.format(plans)
+
+    def plan_toggle_enabled(self, key: str, enabled: bool):
+        if enabled:
+            self.bamboo.enable_plan(key)
+        else:
+            self.bamboo.disable_plan(key)

@@ -26,6 +26,15 @@ def search(args):
     else:
         raise Exception("Unknown resource_type!")
 
+def toggle_enabled(args):
+    if args.resource_type == "plan" or args.resource_type == "p":
+        client = BambooClient(args.server, args.user, args.password, ssl_verify=(not args.ssl_no_verify))
+        client.plan_toggle_enabled(args.key, args.enabled)
+    elif args.resource_type == "deployment" or args.resource_type == "d":
+        raise Exception("Working with deployments in not implement yet!")
+    else:
+        raise Exception("Unknown resource_type!")
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -46,8 +55,17 @@ def main():
     search_parser.add_argument("-o", "--output", default="table")
     search_parser.set_defaults(func=search)
 
-    args = parser.parse_args()
+    enable_parser = sub_parsers.add_parser("enable")
+    enable_parser.add_argument(RESOURCE_TYPE_ARG, choices=RESOURCE_TYPE_CHOICES)
+    enable_parser.add_argument("key")
+    enable_parser.set_defaults(func=toggle_enabled, enabled=True)
 
+    disable_parser = sub_parsers.add_parser("disable")
+    disable_parser.add_argument(RESOURCE_TYPE_ARG, choices=RESOURCE_TYPE_CHOICES)
+    disable_parser.add_argument("key")
+    disable_parser.set_defaults(func=toggle_enabled, enabled=False)
+
+    args = parser.parse_args()
 
     args.func(args)
 
