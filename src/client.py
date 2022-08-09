@@ -20,7 +20,7 @@ class BambooClient:
         index = 0
         plans = []
         while True:
-            result = self.bamboo.search_plan(name, start_index=index, max_results=500)
+            result = self.bamboo.search_plans(name, start_index=index, max_results=500)
             plans += [Plan(p['searchEntity']) for p in result['searchResults']]
             index = result['start-index'] + result['max-result']
             if index == result['size']:

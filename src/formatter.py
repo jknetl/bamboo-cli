@@ -6,7 +6,7 @@ from tabulate import tabulate
 
 class JsonFormatter:
     def format(self, plans):
-        json_object = json.dumps(plans, indent=4)
+        json_object = json.dumps([plan._spec for plan in plans], indent=4)
         print(json_object)
 
 
