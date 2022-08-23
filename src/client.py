@@ -5,17 +5,17 @@ import json
 from formatter import TableFormatter, JsonFormatter
 
 
-class BambooClient:
+class BambooPlanClient:
 
     def __init__(self, server: str, username: str, password: str, ssl_verify=True):
         self.bamboo = Bamboo(url=server, username=username, password=password, verify_ssl=ssl_verify)
 
-    def get_plan(self, key: str):
+    def get(self, key: str):
         plan = self.bamboo.get_plan(key)
         json_object = json.dumps(plan, indent=4)
         print(json_object)
 
-    def search_plan(self, name, output):
+    def search(self, name, output):
         index = 0
         plans = []
         while True:
@@ -32,11 +32,11 @@ class BambooClient:
 
         formatter.format(plans)
 
-    def plan_toggle_enabled(self, key: str, enabled: bool):
+    def toggle_enabled(self, key: str, enabled: bool):
         if enabled:
             self.bamboo.enable_plan(key)
         else:
             self.bamboo.disable_plan(key)
 
-    def delete_plan(self, key: str):
+    def delete(self, key: str):
         self.bamboo.delete_plan(key)
