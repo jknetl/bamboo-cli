@@ -3,6 +3,7 @@ from data import Plan
 import json
 
 from formatter import TableFormatter, JsonFormatter
+from data import ResourceType
 
 
 class BambooPlanClient:
@@ -40,3 +41,11 @@ class BambooPlanClient:
 
     def delete(self, key: str):
         self.bamboo.delete_plan(key)
+
+
+def create_bamboo_client(args):
+    resource_type = ResourceType.from_str(args.resource_type)
+    if resource_type == ResourceType.PLAN:
+        return BambooPlanClient(args.server, args.user, args.password, ssl_verify=(not args.ssl_no_verify))
+    elif resource_type == ResourceType.DEPLOYMENT:
+        raise Exception("Working with deployments in not implement yet!")

@@ -1,34 +1,11 @@
 import argparse
 import os
-from enum import Enum
 
-from client import BambooPlanClient
-
-
-class ResourceType(Enum):
-    PLAN = ["p", "plan"]
-    DEPLOYMENT = ["d", "deployment"]
-
-    @staticmethod
-    def from_str(s):
-        if s in ResourceType.PLAN.value:
-            return ResourceType.PLAN
-        elif s in ResourceType.DEPLOYMENT.value:
-            return ResourceType.DEPLOYMENT
-        else:
-            raise NotImplementedError("Unknown resource type: " + s)
-
+from client import create_bamboo_client
+from data import ResourceType
 
 RESOURCE_TYPE_ARG = "resource_type"
 RESOURCE_TYPE_CHOICES = ResourceType.PLAN.value + ResourceType.DEPLOYMENT.value
-
-
-def create_bamboo_client(args):
-    resource_type = ResourceType.from_str(args.resource_type)
-    if resource_type == ResourceType.PLAN:
-        return BambooPlanClient(args.server, args.user, args.password, ssl_verify=(not args.ssl_no_verify))
-    elif resource_type == ResourceType.DEPLOYMENT:
-        raise Exception("Working with deployments in not implement yet!")
 
 
 def get(args):

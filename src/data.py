@@ -1,3 +1,6 @@
+from enum import Enum
+
+
 class Plan:
     def __init__(self, spec: dict) -> None:
         self._spec = spec
@@ -15,3 +18,15 @@ class Plan:
         return self._spec['projectName']
 
 
+class ResourceType(Enum):
+    PLAN = ["p", "plan"]
+    DEPLOYMENT = ["d", "deployment"]
+
+    @staticmethod
+    def from_str(s):
+        if s in ResourceType.PLAN.value:
+            return ResourceType.PLAN
+        elif s in ResourceType.DEPLOYMENT.value:
+            return ResourceType.DEPLOYMENT
+        else:
+            raise NotImplementedError("Unknown resource type: " + s)
