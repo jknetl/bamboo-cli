@@ -1,8 +1,8 @@
 import argparse
 import os
 
-from client import create_bamboo_client
-from data import ResourceType
+from src.client import create_bamboo_client
+from src.data import ResourceType
 
 RESOURCE_TYPE_ARG = "resource_type"
 RESOURCE_TYPE_CHOICES = ResourceType.PLAN.value + ResourceType.DEPLOYMENT.value
