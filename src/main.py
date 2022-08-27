@@ -1,8 +1,13 @@
 import argparse
 import os
+import configparser
+import appdirs
 
 from src.client import create_bamboo_client
 from src.data import ResourceType
+
+APP_NAME = "bamboo-cli"
+CONFIG_INI = "config.ini"
 
 RESOURCE_TYPE_ARG = "resource_type"
 RESOURCE_TYPE_CHOICES = ResourceType.PLAN.value + ResourceType.DEPLOYMENT.value
@@ -29,10 +34,15 @@ def delete(args):
 
 
 def main():
+
+    config_dir = appdirs.user_config_dir(APP_NAME)
+    config = configparser.ConfigParser()
+    config.read(config_dir + "/" + CONFIG_INI)
+
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--server", default=os.environ.get("BAMBOO_SERVER"))
-    parser.add_argument("-u", "--user", default=os.environ.get("BAMBOO_USER"))
-    parser.add_argument("-p", "--password", default=os.environ.get("BAMBOO_PASSWORD"))
+    parser.add_argument("-s", "--server", default=os.environ.get("BAMBOO_SERVER") or config.get('BAMBOO', 'server'))
+    parser.add_argument("-u", "--user", default=os.environ.get("BAMBOO_USER") or config.get('BAMBOO', 'user'))
+    parser.add_argument("-p", "--password", default=os.environ.get("BAMBOO_PASSWORD") or config.get('BAMBOO', 'password'))
     parser.add_argument("-k", "--ssl-no-verify", default=False, action='store_true')
     sub_parsers = parser.add_subparsers()
 
