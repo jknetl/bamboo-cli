@@ -1,9 +1,9 @@
 from atlassian import Bamboo
-from data import Plan
+from src.data import Plan
 import json
 
-from formatter import TableFormatter, JsonFormatter
-from data import ResourceType
+from src.formatter import TableFormatter, JsonFormatter
+from src.data import ResourceType
 
 
 class BambooPlanClient:
